@@ -47,9 +47,12 @@ public class SwiftAudioStreamerPlugin: NSObject, FlutterPlugin, FlutterStreamHan
 
     func startRecording() {
         engine = AVAudioEngine()
+        
+        try! AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.record)
+      
         let input = engine.inputNode
         let bus = 0
-
+      
         input.installTap(onBus: bus, bufferSize: 22050, format: input.inputFormat(forBus: bus)) { (buffer, time) -> Void in
             let samples = buffer.floatChannelData?[0]
             // audio callback, samples in samples[0]...samples[buffer.frameLength-1]
